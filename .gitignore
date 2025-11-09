@@ -11,7 +11,7 @@ node_modules/
 
 # Firebase Service Account Key
 # Jangan pernah membagikan file kunci ini ke Git!
-vandal-project-2b16e-firebase-adminsdk-fbsc-ed111de025.json
+vandal-project-2b16e-firebase-adminsdk-fbsvc-ed111de025.json
 
 # Jika Anda memiliki file .env di dalam folder config
 # config/.env
