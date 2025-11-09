@@ -1,0 +1,10 @@
+const admin = require("firebase-admin");
+const serviceAccount = require("../vandal-project-2b16e-firebase-adminsdk-fbsvc-ed111de025.json"); // pastikan path-nya benar
+
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  });
+}
+
+module.exports = admin;
