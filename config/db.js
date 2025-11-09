@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 
-const URI = "mongodb://localhost:27017/vandal";
+dotenv.config();
+
+const URI = process.env.MONGO_URI || "mongodb://localhost:27017/vandal";
 
 const connectDB = async () => {
   try {

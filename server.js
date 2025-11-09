@@ -7,7 +7,14 @@ connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000", // ← Development lokal
+      "https://vandal.vercel.app", // ← Production (nanti diisi)
+    ],
+  })
+);
 
 const registerRoutes = require("./routes/registerRoutes");
 const watchlistRoutes = require("./routes/watchlistRoutes");
@@ -19,5 +26,5 @@ app.use("/api/watchlist", verifyToken, watchlistRoutes);
 app.use("/api/portofolio", verifyToken, portofolioRoutes);
 
 app.listen(port, () => {
-  console.log(`API RUNNING ON http://localhost:${port}`);
+  console.log(`API RUNNING ON `);
 });
