@@ -8,6 +8,7 @@ const URI = process.env.MONGO_URI || "mongodb://localhost:27017/vandal";
 const connectDB = async () => {
   try {
     await mongoose.connect(URI);
+    console.log(URI);
     console.log("Koneksi Sukses");
   } catch (error) {
     console.log(`Koneksi Gagal : ${error}`);

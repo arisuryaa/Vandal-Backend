@@ -1,20 +1,15 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+const dotenv = require("dotenv");
+dotenv.config();
+const port = process.env.PORT;
 const connectDB = require("./config/db");
 const cors = require("cors");
 connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3000", // ← Development lokal
-      "https://vandal.vercel.app", // ← Production (nanti diisi)
-    ],
-  })
-);
+app.use(cors());
 
 const registerRoutes = require("./routes/registerRoutes");
 const watchlistRoutes = require("./routes/watchlistRoutes");
@@ -26,5 +21,5 @@ app.use("/api/watchlist", verifyToken, watchlistRoutes);
 app.use("/api/portofolio", verifyToken, portofolioRoutes);
 
 app.listen(port, () => {
-  console.log(`API RUNNING ON `);
+  console.log(`API RUNNING ON localhost:${port} `);
 });
