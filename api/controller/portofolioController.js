@@ -103,7 +103,7 @@ export const createTransaction = async (req, res) => {
 export const getPortofolio = async (req, res) => {
   try {
     const { uid } = req.user;
-    const result = await portofolio.find({ firebaseUid: uid });
+    const result = await Portofolio.find({ firebaseUid: uid });
 
     res.status(200).json({
       success: true,
