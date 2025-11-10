@@ -1,6 +1,6 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const { getAllWatchlist, addWatchlist } = require("../controller/watchlistController");
+import { getAllWatchlist, addWatchlist } from "../controller/watchlistController.js";
 
 router.get("/", async (req, res) => {
   try {
@@ -18,4 +18,4 @@ router.post("/", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

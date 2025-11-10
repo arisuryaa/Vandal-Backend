@@ -1,8 +1,8 @@
-const portofolio = require("../models/portofolio");
-const Portofolio = require("../models/portofolio");
-const Transaction = require("../models/transaction");
+import portofolio from "../models/portofolio.js";
+import Portofolio from "../models/portofolio.js";
+import Transaction from "../models/transaction.js";
 
-const createTransaction = async (req, res) => {
+export const createTransaction = async (req, res) => {
   try {
     const { uid } = req.user;
     const { coinId, type, quantity, pricePerCoin, totalValue, transactedAt, note } = req.body;
@@ -101,7 +101,7 @@ const createTransaction = async (req, res) => {
   }
 };
 
-const getPortofolio = async (req, res) => {
+export const getPortofolio = async (req, res) => {
   try {
     const { uid } = req.user;
     const result = await portofolio.find({ firebaseUid: uid });
@@ -116,9 +116,4 @@ const getPortofolio = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-};
-
-module.exports = {
-  createTransaction,
-  getPortofolio,
 };

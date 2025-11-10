@@ -1,7 +1,7 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const cors = require("cors");
-const mongoose = require("mongoose");
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import mongoose from "mongoose";
 
 // Load environment variables
 dotenv.config();
@@ -81,12 +81,12 @@ app.use(async (req, res, next) => {
 // ============================================
 // IMPORT ROUTES
 // ============================================
-const registerRoutes = require("../routes/registerRoutes");
-const watchlistRoutes = require("../routes/watchlistRoutes");
-const portofolioRoutes = require("../routes/portofolioRoutes");
+import registerRoutes from "../routes/registerRoutes.js";
+import watchlistRoutes from "../routes/watchlistRoutes.js";
+import portofolioRoutes from "../routes/portofolioRoutes.js";
 
 // Import middleware
-const verifyToken = require("../middleware/verifyToken");
+import verifyToken from "../middleware/verifyToken.js";
 
 // ============================================
 // USE ROUTES
@@ -145,4 +145,4 @@ app.use((err, req, res, next) => {
 // ============================================
 // EXPORT FOR VERCEL (NO app.listen()!)
 // ============================================
-module.exports = app;
+export default app;

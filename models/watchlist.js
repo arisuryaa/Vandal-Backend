@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const watchlistSchema = mongoose.Schema({
   firebaseUid: {
@@ -16,4 +16,4 @@ const watchlistSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("watchlist", watchlistSchema);
+export default mongoose.model("watchlist", watchlistSchema);

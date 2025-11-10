@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const portofolioSchema = mongoose.Schema({
   firebaseUid: {
@@ -28,4 +28,4 @@ const portofolioSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("portofolio", portofolioSchema);
+export default mongoose.model("portofolio", portofolioSchema);

@@ -1,5 +1,5 @@
-const axios = require("axios");
-const dotenv = require("dotenv");
+import axios from "axios";
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -10,6 +10,4 @@ const axiosCoinGeccko = axios.create({
   },
 });
 
-module.exports = {
-  axiosCoinGeccko,
-};
+export default axiosCoinGeccko;

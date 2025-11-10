@@ -1,8 +1,8 @@
-const Watchlist = require("../models/watchlist");
-const Users = require("../models/Users");
-const { axiosCoinGeccko } = require("../config/axios");
+import Watchlist from "../models/watchlist.js";
+import Users from "../models/Users.js";
+import { axiosCoinGeccko } from "../config/axios.js";
 
-const getAllWatchlist = async (req, res) => {
+export const getAllWatchlist = async (req, res) => {
   try {
     const { uid } = req.user;
 
@@ -26,7 +26,7 @@ const getAllWatchlist = async (req, res) => {
   }
 };
 
-const addWatchlist = async (req, res) => {
+export const addWatchlist = async (req, res) => {
   const { coinId } = req.body;
   const { uid } = req.user;
   console.log(uid);
@@ -51,9 +51,4 @@ const addWatchlist = async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
   }
-};
-
-module.exports = {
-  getAllWatchlist,
-  addWatchlist,
 };

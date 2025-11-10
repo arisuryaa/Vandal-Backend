@@ -1,6 +1,6 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const { createTransaction, getPortofolio } = require("../controller/portofolioController");
+import { createTransaction, getPortofolio } from "../controller/portofolioController.js";
 
 router.post("/transaction", async (req, res) => {
   try {
