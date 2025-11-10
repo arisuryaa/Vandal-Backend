@@ -1,6 +1,6 @@
 import Watchlist from "../models/watchlist.js";
 import Users from "../models/Users.js";
-import { axiosCoinGeccko } from "../config/axios.js";
+import axiosCoinGeccko from "../config/axios.js";
 
 export const getAllWatchlist = async (req, res) => {
   try {
