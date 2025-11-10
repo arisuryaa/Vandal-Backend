@@ -1,4 +1,3 @@
-import portofolio from "../models/portofolio.js";
 import Portofolio from "../models/portofolio.js";
 import Transaction from "../models/transaction.js";
 

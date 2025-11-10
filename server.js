@@ -11,10 +11,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-import registerRoutes from "./routes/registerRoutes.js";
-import watchlistRoutes from "./routes/watchlistRoutes.js";
-import portofolioRoutes from "./routes/portofolioRoutes.js";
-import verifyToken from "./middleware/verifyToken.js";
+import registerRoutes from "./api/routes/registerRoutes.js";
+import watchlistRoutes from "./api/routes/watchlistRoutes.js";
+import portofolioRoutes from "./api/routes/portofolioRoutes.js";
+import verifyToken from "./api/middleware/verifyToken.js";
 
 app.use("/api/register", verifyToken, registerRoutes);
 app.use("/api/watchlist", verifyToken, watchlistRoutes);
