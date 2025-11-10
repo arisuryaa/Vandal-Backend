@@ -81,12 +81,12 @@ app.use(async (req, res, next) => {
 // ============================================
 // IMPORT ROUTES
 // ============================================
-import registerRoutes from "../routes/registerRoutes.js";
-import watchlistRoutes from "../routes/watchlistRoutes.js";
-import portofolioRoutes from "../routes/portofolioRoutes.js";
+import registerRoutes from "./routes/registerRoutes.js";
+import watchlistRoutes from "./routes/watchlistRoutes.js";
+import portofolioRoutes from "./routes/portofolioRoutes.js";
 
 // Import middleware
-import verifyToken from "../middleware/verifyToken.js";
+import verifyToken from "./middleware/verifyToken.js";
 
 // ============================================
 // USE ROUTES

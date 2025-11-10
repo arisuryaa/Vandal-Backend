@@ -3,7 +3,7 @@ const app = express();
 import dotenv from "dotenv";
 dotenv.config();
 const port = process.env.PORT;
-import connectDB from "./config/db";
+import connectDB from "./api/config/db.js";
 import cors from "cors";
 connectDB();
 
