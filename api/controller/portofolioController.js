@@ -116,3 +116,39 @@ export const getPortofolio = async (req, res) => {
     console.log(error);
   }
 };
+
+export const getAllTransaction = async (req, res) => {
+  try {
+    const { uid } = req.user;
+    const result = await Transaction.find({ firebaseUid: uid });
+
+    res.status(200).json({
+      success: true,
+      message: "Success",
+      portfolioData: {
+        result,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteTransaction = async (id, req, res) => {
+  try {
+    const { uid } = req.user;
+    const result = await Portofolio.findOneAndDelete({ firebaseUid: uid, coinId: id });
+
+    const allTransactionByThatCoin = await Transaction.deleteMany({ firebaseUid: uid, coinId: id });
+
+    res.status(200).json({
+      success: true,
+      message: "Success",
+      portfolioData: {
+        result,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
