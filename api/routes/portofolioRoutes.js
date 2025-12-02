@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import { createTransaction, deleteTransaction, getAllTransaction, getPortofolio } from "../controller/portofolioController.js";
+import { createTransaction, deleteCoin, deleteTransaction, getAllTransaction, getPortofolio } from "../controller/portofolioController.js";
 
 router.post("/transaction", async (req, res) => {
   try {
@@ -29,7 +29,7 @@ router.get("/allTransaction", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    await deleteTransaction(id, req, res);
+    await deleteCoin(id, req, res);
   } catch (error) {
     console.log(error);
   }
@@ -37,6 +37,15 @@ router.delete("/:id", async (req, res) => {
 
 router.put("/:coin", async (req, res) => {
   try {
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.delete("/transaction/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    await deleteTransaction(id, req, res);
   } catch (error) {
     console.log(error);
   }

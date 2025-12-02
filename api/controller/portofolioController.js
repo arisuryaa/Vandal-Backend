@@ -134,7 +134,7 @@ export const getAllTransaction = async (req, res) => {
   }
 };
 
-export const deleteTransaction = async (id, req, res) => {
+export const deleteCoin = async (id, req, res) => {
   try {
     const { uid } = req.user;
     const result = await Portofolio.findOneAndDelete({ firebaseUid: uid, coinId: id });
@@ -144,11 +144,75 @@ export const deleteTransaction = async (id, req, res) => {
     res.status(200).json({
       success: true,
       message: "Success",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteTransaction = async (id, req, res) => {
+  try {
+    const { uid } = req.user;
+
+    // 1️⃣ Ambil transaksi yang mau dihapus (untuk tahu coinId)
+    const tx = await Transaction.findById(id);
+    if (!tx) {
+      return res.status(404).json({ success: false, message: "Transaction not found" });
+    }
+
+    const coinId = tx.coinId;
+
+    // 2️⃣ Hapus transaksi tersebut
+    await Transaction.findByIdAndDelete(id);
+
+    // 3️⃣ Ambil semua transaksi tersisa untuk coin ini
+    const allTransactions = await Transaction.find({
+      firebaseUid: uid,
+      coinId: coinId,
+    });
+
+    // 4️⃣ Hitung ulang quantity & spend
+    let calculatedQuantity = 0;
+    let calculatedSpend = 0;
+
+    allTransactions.forEach((tx) => {
+      const multiplier = tx.type === "sell" ? -1 : 1;
+      calculatedQuantity += tx.quantity * multiplier;
+      calculatedSpend += tx.totalValue * multiplier;
+    });
+
+    // 5️⃣ Kalau quantity > 0 → update portfolio, kalau tidak → hapus
+    if (calculatedQuantity > 0) {
+      const avg = (calculatedSpend / calculatedQuantity).toFixed(2);
+
+      await Portofolio.findOneAndUpdate(
+        { firebaseUid: uid, coinId },
+        {
+          quantity: calculatedQuantity.toString(),
+          totalSpend: calculatedSpend.toString(),
+          averagePrice: avg,
+        },
+        { new: true }
+      );
+    } else {
+      await Portofolio.findOneAndDelete({
+        firebaseUid: uid,
+        coinId,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Transaction deleted and portfolio recalculated",
       portfolioData: {
-        result,
+        coinId,
+        quantity: calculatedQuantity.toString(),
+        totalSpend: calculatedSpend.toString(),
+        averagePrice: calculatedQuantity > 0 ? (calculatedSpend / calculatedQuantity).toFixed(2) : "0",
       },
     });
   } catch (error) {
     console.log(error);
+    res.status(500).json({ success: false, message: "Internal error" });
   }
 };
