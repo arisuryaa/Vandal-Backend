@@ -10,7 +10,7 @@ export const getAllWatchlist = async (req, res) => {
     const data = await Watchlist.find({ firebaseUid: uid });
 
     // Lakukan request ke CoinGecko untuk tiap coinId
-    const result = await Promise.all(data.map((e) => ax.get(`/coins/${e.coinId}`)));
+    const result = await Promise.all(data.map((e) => axiosCoinGeccko.get(`/coins/${e.coinId}`)));
 
     // Ambil hanya data yang dibutuhkan dari response API
     const coinDetails = result.map((r) => r.data);
