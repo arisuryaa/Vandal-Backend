@@ -6,23 +6,44 @@ export const getAllWatchlist = async (req, res) => {
   try {
     const { uid } = req.user;
 
-    // Ambil semua data dari DB
+    // Ambil semua coinId dari DB
     const data = await Watchlist.find({ firebaseUid: uid });
 
-    // Lakukan request ke CoinGecko untuk tiap coinId
-    const result = await Promise.all(data.map((e) => axiosCoinGeccko.get(`/coins/${e.coinId}`)));
+    if (data.length === 0) {
+      return res.status(200).json({
+        status: "success",
+        count: 0,
+        data: [],
+      });
+    }
 
-    // Ambil hanya data yang dibutuhkan dari response API
-    const coinDetails = result.map((r) => r.data);
+    // Gabungkan semua coinId jadi string comma-separated
+    const coinIds = data.map((e) => e.coinId).join(",");
+
+    // SATU request untuk semua coins
+    const response = await axiosCoinGeccko.get("/coins/markets", {
+      params: {
+        vs_currency: "usd",
+        ids: coinIds,
+        order: "market_cap_desc",
+        sparkline: true, // optional: untuk chart
+        price_change_percentage: "24h",
+      },
+    });
+
+    // console.log(response.data);
 
     res.status(200).json({
       status: "success",
-      count: coinDetails.length,
-      data: coinDetails,
+      count: response.data.length,
+      data: response.data,
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ status: "error", message: error.message });
+    res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
   }
 };
 
@@ -50,5 +71,56 @@ export const addWatchlist = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const removeWatchlist = async (id, req, res) => {
+  try {
+    const { uid } = req.user;
+    const coinId = id;
+    console.log(`🔍 Attempting to remove:`);
+    console.log(`   UID: ${uid}`);
+    console.log(`   CoinID: ${id}`);
+
+    // Cari SEMUA watchlist user ini untuk debug
+    const allUserWatchlist = await Watchlist.find({ firebaseUid: uid });
+    console.log(`📋 User's current watchlist:`, allUserWatchlist);
+
+    // Cek apakah coin ada di watchlist (case-insensitive)
+    const watchlistItem = await Watchlist.findOne({
+      firebaseUid: uid,
+      coinId: { $regex: new RegExp(`^${coinId}$`, "i") }, // ← CASE INSENSITIVE
+    });
+
+    if (!watchlistItem) {
+      console.log(`❌ Coin "${coinId}" not found in user's watchlist`);
+      return res.status(404).json({
+        status: "error",
+        message: "Coin not found in watchlist",
+        debug: {
+          searchedCoinId: coinId,
+          availableCoins: allUserWatchlist.map((w) => w.coinId),
+        },
+      });
+    }
+
+    // Hapus dari watchlist
+    await Watchlist.deleteOne({
+      firebaseUid: uid,
+      coinId: watchlistItem.coinId, // ← Gunakan coinId yang ditemukan
+    });
+
+    console.log(`✅ Successfully removed "${coinId}" from watchlist`);
+
+    res.status(200).json({
+      status: "success",
+      message: "Coin removed from watchlist successfully",
+    });
+  } catch (error) {
+    console.error("💥 Error removing from watchlist:", error);
+    res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
   }
 };
